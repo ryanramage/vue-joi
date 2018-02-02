@@ -1,0 +1,50 @@
+{
+  "name": "vue-joi",
+  "version": "1.0.0",
+  "author": "ryan.ramage@gmail.com>",
+  "license": "MIT",
+  "description": "create forms with joi",
+  "keywords": [
+    "vue",
+    "joi",
+    "component"
+  ],
+  "main": "src/JoiEditor.vue",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryanramage/vue-joi.git"
+  },
+  "bugs": "https://github.com/ryanramage/vue-joi/issues",
+  "homepage": "https://github.com/ryanramage/vue-joi",
+  "scripts": {
+    "dev": "webpack-dev-server --inline --hot",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+  },
+  "dependencies": {
+    "babel-runtime": "^5.8.0",
+    "joi": "^13.1.1",
+    "joi-browser": "^13.0.1",
+    "vue": "^2.3.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-plugin-transform-runtime": "^6.0.0",
+    "babel-preset-es2015": "^6.0.0",
+    "babel-preset-stage-2": "^6.0.0",
+    "cross-env": "^1.0.6",
+    "css-loader": "^0.23.0",
+    "vue-hot-reload-api": "^1.2.0",
+    "vue-html-loader": "^1.0.0",
+    "vue-loader": "^11.3.4",
+    "vue-style-loader": "^1.0.0",
+    "vue-template-compiler": "^2.3.2",
+    "webpack": "^1.12.2",
+    "webpack-dev-server": "^1.12.0"
+  },
+  "browserify": {
+    "transform": [
+      "vueify"
+    ]
+  }
+}
