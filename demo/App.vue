@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <span>Vue.js PWA</span>
+      <span>Vue Joi</span>
     </header>
     <joi-editor v-bind="edit" v-on:save="saveToDB"> </joi-editor>
   </div>

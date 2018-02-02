@@ -2,7 +2,9 @@
   <div v-if="children">
     <div v-for="child in children">
       <div v-if="child.schema.schemaType === 'string' && !child.schema._valids._set.length">
-        {{child.key}}: <input v-model="initialValue[child.key]" > <span>{{child.schema._description}}</span>
+        {{child.key}}: <input v-model="initialValue[child.key]" >
+        <span v-if="child.schema._flags.presence === 'required'">*</span>
+        <span>{{child.schema._description}}</span>
       </div>
       <div v-if="child.schema.schemaType === 'string' && child.schema._valids._set.length">
         {{child.key}}:
@@ -11,13 +13,23 @@
              {{ option }}
            </option>
         </select>
+        <span v-if="child.schema._flags.presence === 'required'">*</span>
         <span>{{child.schema._description}}</span>
       </div>
       <div v-if="child.schema.schemaType === 'number'">
-        {{child.key}}: <input v-model="initialValue[child.key]" > <span>{{child.schema._description}}</span>
+        {{child.key}}: <input v-model="initialValue[child.key]" >
+        <span v-if="child.schema._flags.presence === 'required'">*</span>
+        <span>{{child.schema._description}}</span>
       </div>
       <div v-if="child.schema.schemaType === 'boolean'">
         {{child.key}}: <input type="checkbox" id="checkbox" v-model="initialValue[child.key]"> {{initialValue[child.key]}} <span>{{child.schema._description}}</span>
+      </div>
+      <div v-if="child.schema.schemaType === 'object'" class="object">
+        <h4>{{child.key}}</h4>
+        <div v-if="child.schema._description">
+          <span>{{child.schema._description}}</span>
+        </div>
+        <joi-object v-bind="child.info" > </joi-object>
       </div>
     </div>
   </div>
@@ -25,13 +37,15 @@
 
 <script>
   export default {
+    name: 'JoiObject',
     props: {
       schema: {
         type: Object,
         required: true
       },
       initialValue: {
-        type: Object
+        type: Object,
+        required: true
       }
     },
     data () {
@@ -40,7 +54,12 @@
       }
     },
     mounted () {
-      console.log('mounted', this.schema)
+      console.log(this.schema.children)
+      this.schema.children.forEach(child => {
+        if (child.schema.schemaType !== 'object') return
+        if (!this.initialValue[child.key]) this.initialValue[child.key] = {}
+        child.info = { schema: child.schema._inner, initialValue: this.initialValue[child.key] }
+      })
       this.$set(this.$data, 'children', this.schema.children)
     }
   }
@@ -48,5 +67,9 @@
 
 
 <style>
-
+  .object {
+    border: 1px solid blue;
+    border-radius: 4px;
+    padding: 5px 3px;
+  }
 </style>
