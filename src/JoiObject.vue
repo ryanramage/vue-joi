@@ -1,35 +1,28 @@
 <template>
   <div v-if="children">
     <div v-for="child in children">
-      <div v-if="child.schema.schemaType === 'string' && !child.schema._valids._set.length">
-        {{child.key}}: <input v-model="initialValue[child.key]" >
-        <span v-if="child.schema._flags.presence === 'required'">*</span>
-        <span>{{child.schema._description}}</span>
-      </div>
-      <div v-if="child.schema.schemaType === 'string' && child.schema._valids._set.length">
-        {{child.key}}:
-        <select v-model="initialValue[child.key]">
-          <option v-for="option in child.schema._valids._set" v-bind:value="option">
-             {{ option }}
-           </option>
-        </select>
-        <span v-if="child.schema._flags.presence === 'required'">*</span>
-        <span>{{child.schema._description}}</span>
-      </div>
-      <div v-if="child.schema.schemaType === 'number'">
-        {{child.key}}: <input v-model="initialValue[child.key]" >
-        <span v-if="child.schema._flags.presence === 'required'">*</span>
-        <span>{{child.schema._description}}</span>
-      </div>
-      <div v-if="child.schema.schemaType === 'boolean'">
-        {{child.key}}: <input type="checkbox" id="checkbox" v-model="initialValue[child.key]"> {{initialValue[child.key]}} <span>{{child.schema._description}}</span>
-      </div>
       <div v-if="child.schema.schemaType === 'object'" class="object">
         <h4>{{child.key}}</h4>
         <div v-if="child.schema._description">
           <span>{{child.schema._description}}</span>
         </div>
         <joi-object v-bind="child.info" > </joi-object>
+      </div>
+      <div v-else-if="child.schema.schemaType === 'array'" class="array">
+
+      </div>
+      <div v-else>
+        <span class="label">{{child.key}}</span>
+        <input v-if="child.schema.schemaType === 'boolean'" type="checkbox" id="checkbox" v-model="initialValue[child.key]">
+        <input v-if="child.schema.schemaType === 'string' && !child.schema._valids._set.length" v-model="initialValue[child.key]" >
+        <input v-if="child.schema.schemaType === 'number'" v-model="initialValue[child.key]" >
+        <select v-if="child.schema.schemaType === 'string' && child.schema._valids._set.length" v-model="initialValue[child.key]">
+          <option v-for="option in child.schema._valids._set" v-bind:value="option">
+             {{ option }}
+           </option>
+        </select>
+        <span v-if="child.schema._flags.presence === 'required'" class="required">*</span>
+        <span class="description">{{child.schema._description}}</span>
       </div>
     </div>
   </div>
