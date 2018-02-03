@@ -2,7 +2,7 @@
   <div v-if="children">
     <div v-for="child in children">
       <div v-if="child.schema.schemaType === 'object'" class="object">
-        <h4>{{child.key}}</h4>
+        <h4>{{child.schema._flags.label || child.key}}</h4>
         <div v-if="child.schema._description">
           <span>{{child.schema._description}}</span>
         </div>

@@ -6,7 +6,7 @@ module.exports = Joi.object({
 
   cool: Joi.boolean().description('Is the user cool?'),
   style: Joi.string().valid(['a', 'b', 'c']).description('this is amazing'),
-  other: Joi.object().keys({
+  other: Joi.object().label('Extra Info').keys({
     email: Joi.string().email(),
     nice: Joi.boolean(),
     nickName: Joi.string().description('what do people call you?')
