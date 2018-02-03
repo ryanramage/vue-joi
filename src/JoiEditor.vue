@@ -8,7 +8,6 @@
 </template>
 
 <script>
-  const cloneDeep = require('lodash.clonedeep')
   const JoiObject = require('./JoiObject.vue')
 
   export default {
@@ -28,9 +27,6 @@
       }
     },
     mounted () {
-      // let val = cloneDeep(this.initialValue)
-      // console.log(val)
-      // console.log(this.schema)
 
       let info = {
         schema: this.schema._inner,
