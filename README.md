@@ -1,4 +1,4 @@
-vui-joi
+vue-joi
 =========
 
 Create vue forms with [joi](https://www.npmjs.com/package/joi)!
