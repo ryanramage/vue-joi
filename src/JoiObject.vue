@@ -6,7 +6,11 @@
         <div v-if="child.schema._description">
           <span>{{child.schema._description}}</span>
         </div>
-        <joi-object v-bind="child.info" > </joi-object>
+        <joi-object
+          v-bind:schema="child.info.schema"
+          v-bind:initialValue="child.info.initialValue"
+          v-bind:errors="errors[child.key]"
+        ></joi-object>
       </div>
       <div v-else-if="child.schema.schemaType === 'array'" class="array">
 
@@ -23,6 +27,9 @@
         </select>
         <span v-if="child.schema._flags.presence === 'required'" class="required">*</span>
         <span class="description">{{child.schema._description}}</span>
+        <div v-if="errors && errors[child.key]" class="errors">
+          {{errors[child.key].message}}
+        </div>
       </div>
     </div>
   </div>
@@ -39,7 +46,8 @@
       initialValue: {
         type: Object,
         required: true
-      }
+      },
+      errors: { type: Object }
     },
     data () {
       return {
@@ -47,7 +55,6 @@
       }
     },
     mounted () {
-      console.log(this.schema.children)
       this.schema.children.forEach(child => {
         if (child.schema.schemaType !== 'object') return
         if (!this.initialValue[child.key]) this.initialValue[child.key] = {}

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="joiObject">
+  <div v-if="joiObject.schema">
     <joi-object v-bind="joiObject" > </joi-object>
     <div id="save">
       <button v-on:click="save">Save</button>
@@ -8,6 +8,7 @@
 </template>
 
 <script>
+  const set = require('lodash.set')
   const JoiObject = require('./JoiObject.vue')
 
   export default {
@@ -23,14 +24,19 @@
     },
     data () {
       return {
-        joiObject: null
+        joiObject: {
+          schema: null,
+          initialValue: null,
+          errors: []
+        }
       }
     },
     mounted () {
 
       let info = {
         schema: this.schema._inner,
-        initialValue: this.initialValue
+        initialValue: this.initialValue,
+        errors: {}
       }
 
       this.$set(this.$data, 'joiObject', info)
@@ -42,10 +48,17 @@
 
     methods: {
       save () {
-        console.log('saved called!', this.initialValue)
         this.schema.validate(this.initialValue, {abortEarly: false}, (err, result) => {
-          if (err) return console.log(err.details)
-          this.$emit('save', result)
+          if (err) {
+            // clear errors by key
+            Object.keys(this.$data.joiObject.errors).forEach(key => this.$set(this.$data.joiObject.errors, key, null))
+
+            // set errors by key
+            let reformattedErrors = {}
+            err.details.forEach(e => set(reformattedErrors, e.path.join('.'), e))
+            Object.keys(reformattedErrors).forEach(key => this.$set(this.$data.joiObject.errors, key, reformattedErrors[key]))
+          }
+          else this.$emit('save', result)
         })
       }
     }
