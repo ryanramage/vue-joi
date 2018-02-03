@@ -16,7 +16,7 @@
 
       </div>
       <div v-else>
-        <span class="label">{{child.key}}</span>
+        <span class="label">{{child.schema._flags.label || child.key}}</span>
         <input v-if="child.schema.schemaType === 'boolean'" type="checkbox" id="checkbox" v-model="initialValue[child.key]">
         <input v-if="child.schema.schemaType === 'string' && !child.schema._valids._set.length" v-model="initialValue[child.key]" >
         <input v-if="child.schema.schemaType === 'number'" v-model="initialValue[child.key]" >
@@ -56,6 +56,7 @@
     },
     mounted () {
       this.schema.children.forEach(child => {
+        console.log(child)
         if (child.schema.schemaType !== 'object') return
         if (!this.initialValue[child.key]) this.initialValue[child.key] = {}
         child.info = { schema: child.schema._inner, initialValue: this.initialValue[child.key] }

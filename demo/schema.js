@@ -1,7 +1,7 @@
 var Joi = require('joi')
 
 module.exports = Joi.object({
-  first_name: Joi.number().required(),
+  first_name: Joi.number().required().label('First Name'),
   last_name: Joi.string().required().description('last name please'),
 
   cool: Joi.boolean().description('Is the user cool?'),
