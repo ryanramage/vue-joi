@@ -25,6 +25,7 @@
     "joi": "^13.1.1",
     "joi-browser": "^13.0.1",
     "lodash.set": "^4.3.2",
+    "pluralize": "^7.0.0",
     "vue": "^2.3.2"
   },
   "devDependencies": {

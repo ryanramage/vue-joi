@@ -13,7 +13,16 @@
         ></joi-object>
       </div>
       <div v-else-if="child.schema.schemaType === 'array'" class="array">
-
+        <h4>{{child.schema._flags.label || child.key}}</h4>
+        <div v-if="child.schema._description">
+          <span>{{child.schema._description}}</span>
+        </div>
+        <joi-array
+          v-bind:schema="child.info.schema"
+          v-bind:initialValue="child.info.initialValue"
+          v-bind:errors="errors[child.key]"
+          v-bind:name="child.schema._flags.label || child.key"
+        ></joi-array>
       </div>
       <div v-else>
         <span class="label">{{child.schema._flags.label || child.key}}</span>
@@ -36,8 +45,11 @@
 </template>
 
 <script>
+  import JoiArray from './JoiArray.vue'
+
   export default {
     name: 'JoiObject',
+    components: { JoiArray },
     props: {
       schema: {
         type: Object,
@@ -56,10 +68,14 @@
     },
     mounted () {
       this.schema.children.forEach(child => {
-        console.log(child)
-        if (child.schema.schemaType !== 'object') return
-        if (!this.initialValue[child.key]) this.initialValue[child.key] = {}
-        child.info = { schema: child.schema._inner, initialValue: this.initialValue[child.key] }
+        if (child.schema.schemaType === 'object') {
+          if (!this.initialValue[child.key]) this.initialValue[child.key] = {}
+          child.info = { schema: child.schema._inner, initialValue: this.initialValue[child.key] }
+        }
+        if (child.schema.schemaType === 'array') {
+          if (!this.initialValue[child.key]) this.initialValue[child.key] = []
+          child.info = { schema: child.schema._inner, initialValue: this.initialValue[child.key] }
+        }
       })
       this.$set(this.$data, 'children', this.schema.children)
     }
@@ -69,8 +85,6 @@
 
 <style>
   .object {
-    border: 1px solid blue;
-    border-radius: 4px;
     padding: 5px 3px;
   }
 </style>
