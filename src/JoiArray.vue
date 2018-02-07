@@ -10,15 +10,30 @@
         </div>
       </li>
       <li>
-        <input v-if="childSchema.schemaType === 'string' && !childSchema._valids._set.length"  v-model="tempInput">
-        <input v-if="childSchema.schemaType === 'number'" v-model="tempInput">
-        <select v-if="childSchema.schemaType === 'string' && childSchema._valids._set.length" v-model="tempInput">
-          <option v-for="option in childSchema._valids._set">
-             {{ option }}
-           </option>
-        </select>
-        <button v-on:click="add">Add {{singularName}}</button>
-        <div v-if="tempError" class="errors">{{tempError}}</div>
+        <div v-if="childSchema.schemaType === 'object'">
+          <div v-if="tempInput">
+            <joi-object
+              v-bind:schema="childSchema._inner"
+              v-bind:initialValue="tempInput"
+            ></joi-object>
+          </div>
+          <div v-else>
+            <button v-on:click="add">Add {{singularName}}</button>
+          </div>
+        </div>
+        <div v-else>
+          <input v-if="childSchema.schemaType === 'string' && !childSchema._valids._set.length"  v-model="tempInput" />
+          <input v-if="childSchema.schemaType === 'number'" v-model="tempInput" />
+          <select v-if="childSchema.schemaType === 'string' && childSchema._valids._set.length" v-model="tempInput" />
+            <option v-for="option in childSchema._valids._set">
+               {{ option }}
+             </option>
+          </select>
+          <button v-on:click="add">Add {{singularName}}</button>
+
+        </div>
+        <div v-if="tempError" class="errors">{{tempError.message}}</div>
+
       </li>
     </ul>
   </div>
@@ -61,15 +76,21 @@
         this.initialValue.splice(index, 1)
       },
       add () {
-        this.childSchema.validate(this.tempInput, (err, resp) => {
-          if (err) return this.$set(this.$data, 'tempError', err.message)
+        if (this.childSchema.schemaType === 'object') {
+          if (!this.tempInput) {
+           this.$set(this.$data, 'tempInput', {})
+           console.log("ADDDADD", this.tempInput, this.childSchema)
+          }
+        } else {
+          this.childSchema.validate(this.tempInput, (err, resp) => {
+            if (err) return this.$set(this.$data, 'tempError', err)
 
-          this.$set(this.$data, 'tempError', null)
-          this.initialValue.push(this.tempInput)
-          this.$set(this.$data, 'tempInput', null)
+            this.$set(this.$data, 'tempError', null)
+            this.initialValue.push(this.tempInput)
+            this.$set(this.$data, 'tempInput', null)
 
-        })
-
+          })
+        }
       }
     }
   }
