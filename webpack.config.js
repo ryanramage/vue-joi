@@ -32,7 +32,7 @@ module.exports = {
     alias: {
       joi: 'joi-browser'
     }
-  },  
+  },
   devServer: {
     historyApiFallback: true,
     noInfo: true

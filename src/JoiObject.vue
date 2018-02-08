@@ -48,7 +48,7 @@
   import JoiArray from './JoiArray.vue'
 
   export default {
-    name: 'JoiObject',
+    name: 'joi-object',
     components: { JoiArray },
     props: {
       schema: {
@@ -65,6 +65,9 @@
       return {
         children: null
       }
+    },
+    beforeCreate: function () {
+      this.$options.components.JoiArray = require('./JoiArray.vue')
     },
     mounted () {
       this.schema.children.forEach(child => {
