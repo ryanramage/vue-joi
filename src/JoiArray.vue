@@ -44,7 +44,7 @@
   import pluralize from 'pluralize'
 
   export default {
-    name: 'joi-array',
+    name: 'JoiArray',
     components: { JoiObject },
     props: {
       schema: {

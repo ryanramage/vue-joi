@@ -48,7 +48,7 @@
   import JoiArray from './JoiArray.vue'
 
   export default {
-    name: 'joi-object',
+    name: 'JoiObject',
     components: { JoiArray },
     props: {
       schema: {
