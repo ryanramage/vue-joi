@@ -71,6 +71,9 @@
       this.$set(this.$data, 'singularName', pluralize.singular(this.name))
       this.$set(this.$data, 'childSchema', this.schema.items[0])
     },
+    beforeCreate: function () {
+      this.$options.components.JoiObject = require('./JoiObject.vue')
+    },
     methods: {
       remove (index) {
         this.initialValue.splice(index, 1)
