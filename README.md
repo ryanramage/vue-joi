@@ -1,6 +1,8 @@
 vue-joi
 =========
 
+This is a work in progress.
+
 Create vue forms with [joi](https://www.npmjs.com/package/joi)!
 
 Usage
