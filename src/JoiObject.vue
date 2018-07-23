@@ -66,6 +66,9 @@
         children: null
       }
     },
+    beforeCreate: function () {
+      this.$options.components.JoiArray = require('./JoiArray.vue')
+    },
     mounted () {
       this.schema.children.forEach(child => {
         if (child.schema.schemaType === 'object') {
